@@ -1,6 +1,23 @@
 # FORM — cloud physique tracker
 
-This React/Vite app preserves `reference/aesthetic_tracker.html`: its FORM design, five-day Push/Pull/Legs/Upper/Lower + Abs split, set logging, food macros, steps, body measurements, charts, targets, and JSON/CSV exports. It adds Supabase email/password authentication, private cloud persistence, cross-device conflict detection, and an installable PWA shell.
+This React/Vite app provides individual fitness profiles and routines with Supabase account storage, conflict detection, and an installable PWA shell. Existing users retain their original FORM routine, targets, and history from `reference/aesthetic_tracker.html`.
+
+## Personalize your routine
+
+Open **My plan** after signing in. New accounts open here first; they are not assigned another user's age, weight, or nutrition targets.
+
+- Choose muscle building, fat loss, recomposition, strength, general fitness, or endurance.
+- Choose beginner/intermediate/advanced experience, gym/dumbbells/bodyweight + bands, a time budget, and two to six weekdays.
+- Auto recommends full body for 2–3 days, upper/lower for 4, a hybrid split for 5, and push/pull/legs for 6. Endurance auto plans with at least 3 days combine two strength sessions with aerobic sessions. Routine types validate their required frequency.
+- Profile name, age, height, weight, goal weight, gender, and current build are optional. Gender/build are context, not deterministic training or metabolism rules. Set low-impact conditioning if desired.
+- Preview before applying. Targets stay at the entered values; calorie needs are not automatically inferred. An explicit opt-in protein starting point uses 1.6 g/kg of entered body weight. Zero means no target.
+- Choose **Keep my current routine** to save profile/targets without replacing custom exercises. Use the routine editor to change exercises, sets, rep ranges, session names, and weekdays, or add/remove exercises.
+- Each logged session keeps a snapshot of its exercise prescription. Applying or editing a plan affects new sessions; old workout names, sets, and exports stay consistent. Changing the session for the same logged date explicitly replaces that date's log after confirmation.
+- Workout log tracks cardio minutes too. Overview shows weekly cardio against your optional target; Progress includes completed-set load trends, cardio duration, weight, circumference, and your goal weight.
+
+Plans are starting templates for healthy adults, not clinical, injury rehabilitation, or pregnancy/postpartum plans. Time budgets control exercise count, not guaranteed session length. Template design follows [ACSM training guidance](https://acsm.org/resistance-training-guidelines-update-2026/), [CDC aerobic/strength guidance](https://www.cdc.gov/physical-activity-basics/guidelines/adults.html), and the [ISSN protein position stand](https://pmc.ncbi.nlm.nih.gov/articles/PMC5477153/).
+
+Profiles, programs, cardio fields, and saved session templates fit the existing JSON settings/session data. **No Supabase schema migration is required for this update.** Backups stay version 1 and remain compatible with older backups. The older HTML app cannot display new personalized programs; use this app to restore updated backups.
 
 ## 1. Run locally
 

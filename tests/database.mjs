@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict'
 import {readFile} from 'node:fs/promises'
+import {generateProgram} from '../src/programs.js'
 import {PGlite} from '@electric-sql/pglite'
 
 async function checkDatabase(){
@@ -16,6 +17,9 @@ async function checkDatabase(){
   assert.equal(saved.rows[0].revision,1)
   const loaded=await db.query('select public.load_tracker() as result')
   assert.deepEqual(loaded.rows[0].result.snapshot,snapshot)
+  snapshot.profile={name:'Personal plan',goal:'endurance',experience:'beginner',equipment:'dumbbells',split:'auto',trainingDays:[1,3,5],sessionMinutes:45};snapshot.program=generateProgram(snapshot.profile);snapshot.workouts['2026-10-12'].template={day:'Push',dow:1,focus:'chest',moves:[['Original lift',3,'8–12']]};snapshot.workouts['2026-10-12'].cardioMinutes=20;
+  await db.query('select public.save_tracker($1::jsonb,1)',[JSON.stringify(snapshot)]);
+  assert.deepEqual((await db.query('select public.load_tracker() as result')).rows[0].result.snapshot,snapshot);
   await assert.rejects(db.query('select public.save_tracker($1::jsonb,0)',[JSON.stringify(snapshot)]),/changed on another device/)
   await db.exec(`set request.jwt.claim.sub='00000000-0000-0000-0000-000000000002';`)
   assert.equal((await db.query('select public.load_tracker() as result')).rows[0].result.snapshot,null)
